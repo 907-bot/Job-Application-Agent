@@ -1,0 +1,23 @@
+# This file ensures the logs/ directory is tracked by git
+# .gitkeep files are used to track empty directories in git repositories
+
+# Directory structure:
+# logs/
+# ├── .gitkeep           (this file - keeps directory in git)
+# ├── app.log            (application logs - NOT tracked)
+# ├── error.log          (error logs - NOT tracked)
+# └── access.log         (access logs - NOT tracked)
+
+# Usage:
+# - Application logs go here: logs/app.log
+# - Error logs: logs/error.log
+# - Access logs: logs/access.log
+# - All *.log files should be in .gitignore
+# - Only .gitkeep is tracked to preserve directory structure
+
+# Logging configuration:
+# - See config/logging.yaml for detailed logging setup
+# - Logs rotate based on size and time
+# - Maximum file size: 10MB per file
+# - Backup count: 10 files
+# - Log level: Configurable via environment variables
