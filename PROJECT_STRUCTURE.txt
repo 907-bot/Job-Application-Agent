@@ -1,0 +1,83 @@
+job-application-agent/
+├── README.md
+├── .gitignore
+├── LICENSE
+├── requirements.txt
+├── setup.py
+├── Dockerfile
+├── docker-compose.yml
+├── .github/
+│   └── workflows/
+│       ├── tests.yml
+│       ├── deploy.yml
+│       └── codeql.yml
+├── notebooks/
+│   ├── 01_configuration_setup.ipynb
+│   ├── 02_mayini_framework_llm.ipynb
+│   ├── 03_utility_functions.ipynb
+│   ├── 04_job_scraper.ipynb
+│   ├── 05_resume_customizer.ipynb
+│   ├── 06_mayini_classifier.ipynb
+│   ├── 07_application_agent.ipynb
+│   ├── 08_unit_tests.ipynb
+│   ├── 09_gradio_interface.ipynb
+│   └── 10_complete_integration_demo.ipynb
+├── src/
+│   ├── __init__.py
+│   ├── config.py
+│   ├── mayini_model.py
+│   ├── utils.py
+│   ├── scraper.py
+│   ├── customizer.py
+│   ├── classifier.py
+│   ├── agent.py
+│   └── interface.py
+├── tests/
+│   ├── __init__.py
+│   ├── test_config.py
+│   ├── test_utils.py
+│   ├── test_scraper.py
+│   ├── test_customizer.py
+│   ├── test_classifier.py
+│   ├── test_agent.py
+│   └── test_integration.py
+├── config/
+│   ├── config.yaml
+│   ├── logging.yaml
+│   └── secrets.example.yaml
+├── scripts/
+│   ├── setup_environment.sh
+│   ├── run_tests.sh
+│   ├── train_model.py
+│   ├── deploy.sh
+│   └── monitor.py
+├── models/
+│   ├── .gitkeep
+│   └── README.md
+├── data/
+│   ├── sample_jobs.json
+│   ├── sample_resume.json
+│   └── .gitkeep
+├── docs/
+│   ├── ARCHITECTURE.md
+│   ├── API_DOCUMENTATION.md
+│   ├── DEPLOYMENT.md
+│   ├── CONTRIBUTING.md
+│   ├── TROUBLESHOOTING.md
+│   └── MAYINI_FRAMEWORK.md
+├── examples/
+│   ├── example_search.py
+│   ├── example_customize.py
+│   └── example_classify.py
+├── ci_cd/
+│   ├── Jenkinsfile
+│   ├── .travis.yml
+│   └── cloudbuild.yaml
+├── kubernetes/
+│   ├── deployment.yaml
+│   ├── service.yaml
+│   ├── configmap.yaml
+│   └── secrets.example.yaml
+├── logs/
+│   └── .gitkeep
+└── .env.example
