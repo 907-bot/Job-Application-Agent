@@ -1,0 +1,174 @@
+[
+  {
+    "id": "job_001",
+    "title": "Senior Python Developer",
+    "company": "Tech Giants Inc",
+    "location": "Remote",
+    "description": "We are looking for an experienced Python developer with 5+ years expertise in Django, FastAPI, and cloud technologies. You will lead a team of engineers and drive architectural decisions for our microservices platform.",
+    "requirements": [
+      "Python",
+      "Django",
+      "FastAPI",
+      "Docker",
+      "AWS",
+      "PostgreSQL",
+      "REST API",
+      "Microservices"
+    ],
+    "experience_required": 5,
+    "salary_range": "$120k - $160k",
+    "posted_date": "2025-11-01",
+    "job_type": "Full-time",
+    "level": "Senior"
+  },
+  {
+    "id": "job_002",
+    "title": "React Frontend Developer",
+    "company": "Innovation Labs",
+    "location": "San Francisco, CA",
+    "description": "Build amazing web applications with React, TypeScript, and modern frontend tools. Join our team of creative engineers building next-generation user experiences.",
+    "requirements": [
+      "React",
+      "TypeScript",
+      "JavaScript",
+      "CSS",
+      "REST API",
+      "Git",
+      "HTML5"
+    ],
+    "experience_required": 3,
+    "salary_range": "$100k - $140k",
+    "posted_date": "2025-11-03",
+    "job_type": "Full-time",
+    "level": "Mid-level"
+  },
+  {
+    "id": "job_003",
+    "title": "Machine Learning Engineer",
+    "company": "AI Solutions Corp",
+    "location": "Remote",
+    "description": "Develop and deploy machine learning models using TensorFlow, PyTorch, and cloud infrastructure. Work on cutting-edge AI solutions for enterprise clients.",
+    "requirements": [
+      "Python",
+      "Machine Learning",
+      "TensorFlow",
+      "PyTorch",
+      "SQL",
+      "AWS",
+      "Docker",
+      "Scikit-learn"
+    ],
+    "experience_required": 4,
+    "salary_range": "$130k - $180k",
+    "posted_date": "2025-11-05",
+    "job_type": "Full-time",
+    "level": "Senior"
+  },
+  {
+    "id": "job_004",
+    "title": "DevOps Engineer",
+    "company": "Cloud Systems Ltd",
+    "location": "New York, NY",
+    "description": "Manage cloud infrastructure, CI/CD pipelines, and deployment automation. We're looking for someone passionate about infrastructure as code.",
+    "requirements": [
+      "Docker",
+      "Kubernetes",
+      "AWS",
+      "Jenkins",
+      "Terraform",
+      "Linux",
+      "Python",
+      "CI/CD"
+    ],
+    "experience_required": 3,
+    "salary_range": "$110k - $150k",
+    "posted_date": "2025-11-06",
+    "job_type": "Full-time",
+    "level": "Mid-level"
+  },
+  {
+    "id": "job_005",
+    "title": "Full Stack Developer",
+    "company": "StartUp Co",
+    "location": "Austin, TX",
+    "description": "Build end-to-end web applications using modern tech stack. Work in a fast-paced startup environment with amazing growth opportunities.",
+    "requirements": [
+      "React",
+      "Node.js",
+      "MongoDB",
+      "REST API",
+      "JavaScript",
+      "Docker",
+      "Git"
+    ],
+    "experience_required": 2,
+    "salary_range": "$90k - $130k",
+    "posted_date": "2025-11-07",
+    "job_type": "Full-time",
+    "level": "Mid-level"
+  },
+  {
+    "id": "job_006",
+    "title": "Data Engineer",
+    "company": "Data Corp",
+    "location": "Seattle, WA",
+    "description": "Build data pipelines and infrastructure for analytics at scale. Process billions of events daily using modern data technologies.",
+    "requirements": [
+      "Python",
+      "SQL",
+      "Spark",
+      "Kafka",
+      "AWS",
+      "Airflow",
+      "ETL",
+      "Scala"
+    ],
+    "experience_required": 4,
+    "salary_range": "$120k - $160k",
+    "posted_date": "2025-11-08",
+    "job_type": "Full-time",
+    "level": "Senior"
+  },
+  {
+    "id": "job_007",
+    "title": "Backend Engineer",
+    "company": "Microservices Inc",
+    "location": "Remote",
+    "description": "Design and implement scalable microservices architecture. Work with distributed systems and solve complex technical challenges.",
+    "requirements": [
+      "Java",
+      "Spring",
+      "Microservices",
+      "Kubernetes",
+      "REST API",
+      "PostgreSQL",
+      "Docker"
+    ],
+    "experience_required": 5,
+    "salary_range": "$125k - $170k",
+    "posted_date": "2025-11-09",
+    "job_type": "Full-time",
+    "level": "Senior"
+  },
+  {
+    "id": "job_008",
+    "title": "Cloud Architect",
+    "company": "Enterprise Tech",
+    "location": "Boston, MA",
+    "description": "Design cloud-native solutions and lead architecture decisions. Mentor junior engineers and drive technical excellence.",
+    "requirements": [
+      "AWS",
+      "Azure",
+      "Kubernetes",
+      "Terraform",
+      "Python",
+      "Microservices",
+      "Cloud Architecture"
+    ],
+    "experience_required": 7,
+    "salary_range": "$150k - $200k",
+    "posted_date": "2025-11-10",
+    "job_type": "Full-time",
+    "level": "Senior"
+  }
+]

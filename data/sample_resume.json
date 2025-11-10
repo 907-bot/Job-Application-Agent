@@ -1,0 +1,174 @@
+{
+  "name": "Alex Chen",
+  "email": "alex.chen@email.com",
+  "phone": "+1-555-0123",
+  "location": "San Francisco, CA",
+  "professional_summary": "Experienced Full-Stack Software Engineer with 6+ years of proven expertise in designing, developing, and deploying scalable distributed systems and machine learning applications. Strong track record of delivering high-impact solutions in fast-paced startup and enterprise environments. Passionate about clean code, best practices, and mentoring junior engineers.",
+  "experience": 6,
+  "skills": [
+    "Python",
+    "Java",
+    "JavaScript",
+    "TypeScript",
+    "Docker",
+    "Kubernetes",
+    "AWS",
+    "Azure",
+    "GCP",
+    "Machine Learning",
+    "TensorFlow",
+    "PyTorch",
+    "PostgreSQL",
+    "MongoDB",
+    "Redis",
+    "REST API",
+    "GraphQL",
+    "Git",
+    "CI/CD",
+    "Linux",
+    "Agile",
+    "Scrum"
+  ],
+  "work_experience": [
+    {
+      "id": 1,
+      "position": "Senior Software Engineer",
+      "company": "Tech Giants Inc",
+      "location": "Remote",
+      "start_date": "2022-03",
+      "end_date": "Present",
+      "current": true,
+      "description": "Lead engineer on core platform team",
+      "achievements": [
+        "Led team of 8 engineers developing microservices platform serving 10M+ users",
+        "Architected and deployed Kubernetes infrastructure reducing deployment time by 70%",
+        "Implemented ML pipeline processing 1B+ events daily with 99.9% uptime",
+        "Reduced API latency by 60% through query optimization and caching strategies",
+        "Mentored 5 junior engineers on software design and best practices"
+      ]
+    },
+    {
+      "id": 2,
+      "position": "Software Engineer",
+      "company": "Innovation Labs",
+      "location": "San Francisco, CA",
+      "start_date": "2019-06",
+      "end_date": "2022-02",
+      "current": false,
+      "description": "Full-stack engineer working on web applications",
+      "achievements": [
+        "Built React-based frontend serving 1M+ monthly active users",
+        "Developed backend APIs using Node.js and Python handling 10K requests/sec",
+        "Implemented real-time features using WebSockets and Redis",
+        "Improved application performance by 40% through code optimization",
+        "Led migration from monolith to microservices architecture"
+      ]
+    },
+    {
+      "id": 3,
+      "position": "Junior Software Engineer",
+      "company": "StartUp Co",
+      "location": "Austin, TX",
+      "start_date": "2018-01",
+      "end_date": "2019-05",
+      "current": false,
+      "description": "Early-stage startup experience",
+      "achievements": [
+        "Developed full-stack web applications from scratch",
+        "Built automated testing framework improving code quality",
+        "Deployed applications to AWS and managed infrastructure",
+        "Participated in agile development process with 2-week sprints"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "Bachelor of Science",
+      "field": "Computer Science",
+      "institution": "Stanford University",
+      "graduation_year": 2018,
+      "gpa": 3.8,
+      "details": "Focused on machine learning and distributed systems"
+    }
+  ],
+  "certifications": [
+    {
+      "name": "AWS Certified Solutions Architect",
+      "issuer": "Amazon Web Services",
+      "issue_date": "2021-06",
+      "expiration_date": "2024-06",
+      "credential_id": "AWS-SA-12345"
+    },
+    {
+      "name": "Kubernetes Administrator (CKA)",
+      "issuer": "Cloud Native Computing Foundation",
+      "issue_date": "2022-03",
+      "expiration_date": "2025-03",
+      "credential_id": "CKA-98765"
+    },
+    {
+      "name": "Professional Scrum Master",
+      "issuer": "Scrum.org",
+      "issue_date": "2020-09",
+      "expiration_date": null,
+      "credential_id": "PSM-54321"
+    }
+  ],
+  "projects": [
+    {
+      "name": "Distributed Job Application Agent",
+      "description": "AI-powered platform for intelligent job search and resume customization",
+      "technologies": [
+        "Python",
+        "PyTorch",
+        "Kubernetes",
+        "PostgreSQL",
+        "Redis"
+      ],
+      "duration": "6 months",
+      "role": "Lead Developer",
+      "achievements": [
+        "Designed and implemented ML pipeline for job relevance scoring",
+        "Achieved 98% test coverage with comprehensive test suite",
+        "Deployed to production serving 10K+ users",
+        "Implemented real-time monitoring and alerting"
+      ]
+    },
+    {
+      "name": "Microservices Architecture Migration",
+      "description": "Led migration of monolithic application to microservices",
+      "technologies": [
+        "Docker",
+        "Kubernetes",
+        "gRPC",
+        "PostgreSQL"
+      ],
+      "duration": "8 months",
+      "role": "Tech Lead",
+      "achievements": [
+        "Designed microservices architecture for 50+ services",
+        "Implemented service mesh for inter-service communication",
+        "Reduced deployment time from 2 hours to 5 minutes",
+        "Zero-downtime deployment strategy"
+      ]
+    }
+  ],
+  "languages": [
+    {
+      "language": "English",
+      "proficiency": "Native"
+    },
+    {
+      "language": "Mandarin Chinese",
+      "proficiency": "Fluent"
+    }
+  ],
+  "interests": [
+    "Machine Learning",
+    "Distributed Systems",
+    "Open Source",
+    "Mentoring",
+    "Technical Writing",
+    "Public Speaking"
+  ]
+}

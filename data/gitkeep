@@ -1,0 +1,24 @@
+# This file ensures the data/ directory is tracked by git
+# .gitkeep files are used to track empty directories in git repositories
+
+# Directory structure:
+# data/
+# ├── .gitkeep                  (this file - keeps directory in git)
+# ├── sample_jobs.json          (8 sample job postings)
+# └── sample_resume.json        (sample resume for testing)
+
+# Data files included:
+# 1. sample_jobs.json - 8 real job postings with full details
+# 2. sample_resume.json - Detailed sample resume for Alex Chen
+
+# Usage:
+# - Used by scraper.py for testing and demonstration
+# - Used by customizer.py for resume samples
+# - Used by tests for mock data
+# - Do NOT commit real user data to git (add to .gitignore if needed)
+
+# To add more sample data:
+# 1. Create JSON files in this directory
+# 2. Name them descriptively: sample_*.json
+# 3. Follow the same structure as sample_jobs.json and sample_resume.json
+# 4. Add to git: git add data/*.json
