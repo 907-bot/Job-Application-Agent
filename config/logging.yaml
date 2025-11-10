@@ -1,0 +1,175 @@
+# Logging Configuration
+# Configure logging levels, formatters, and handlers
+
+version: 1
+disable_existing_loggers: false
+
+# Define formatters for log messages
+formatters:
+  simple:
+    format: '[%(levelname)s] %(message)s'
+  
+  standard:
+    format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    datefmt: '%Y-%m-%d %H:%M:%S'
+  
+  detailed:
+    format: '%(asctime)s | %(name)s | %(levelname)s | %(funcName)s:%(lineno)d | %(message)s'
+    datefmt: '%Y-%m-%d %H:%M:%S'
+  
+  json:
+    format: '{"time": "%(asctime)s", "name": "%(name)s", "level": "%(levelname)s", "message": "%(message)s"}'
+
+# Define handlers (where logs go)
+handlers:
+  # Console handler - print to terminal
+  console:
+    class: logging.StreamHandler
+    level: INFO
+    formatter: standard
+    stream: ext://sys.stdout
+  
+  # File handler - write to file
+  file:
+    class: logging.FileHandler
+    level: DEBUG
+    formatter: detailed
+    filename: 'logs/app.log'
+    encoding: utf-8
+  
+  # Rotating file handler - rotate when file gets large
+  file_rotating:
+    class: logging.handlers.RotatingFileHandler
+    level: DEBUG
+    formatter: detailed
+    filename: 'logs/app_rotating.log'
+    maxBytes: 10485760  # 10MB
+    backupCount: 5
+    encoding: utf-8
+  
+  # Timed rotating file handler - rotate based on time
+  file_timed:
+    class: logging.handlers.TimedRotatingFileHandler
+    level: DEBUG
+    formatter: detailed
+    filename: 'logs/app_timed.log'
+    when: 'midnight'
+    interval: 1
+    backupCount: 7
+    encoding: utf-8
+  
+  # Error file handler - only errors
+  error_file:
+    class: logging.FileHandler
+    level: ERROR
+    formatter: detailed
+    filename: 'logs/errors.log'
+    encoding: utf-8
+  
+  # Warning file handler - warnings and above
+  warning_file:
+    class: logging.FileHandler
+    level: WARNING
+    formatter: detailed
+    filename: 'logs/warnings.log'
+    encoding: utf-8
+
+# Define loggers
+loggers:
+  # Application logger
+  src:
+    level: DEBUG
+    handlers: [console, file_rotating, error_file]
+    propagate: false
+  
+  # Config logger
+  src.config:
+    level: INFO
+    handlers: [console, file_rotating]
+    propagate: false
+  
+  # Utils logger
+  src.utils:
+    level: DEBUG
+    handlers: [console, file_rotating]
+    propagate: false
+  
+  # MAYINI model logger
+  src.mayini_model:
+    level: INFO
+    handlers: [console, file_rotating]
+    propagate: false
+  
+  # Scraper logger
+  src.scraper:
+    level: DEBUG
+    handlers: [console, file_rotating]
+    propagate: false
+  
+  # Customizer logger
+  src.customizer:
+    level: DEBUG
+    handlers: [console, file_rotating]
+    propagate: false
+  
+  # Classifier logger
+  src.classifier:
+    level: DEBUG
+    handlers: [console, file_rotating]
+    propagate: false
+  
+  # Agent logger
+  src.agent:
+    level: DEBUG
+    handlers: [console, file_rotating]
+    propagate: false
+  
+  # Interface logger
+  src.interface:
+    level: INFO
+    handlers: [console, file_rotating]
+    propagate: false
+  
+  # External libraries
+  torch:
+    level: WARNING
+    handlers: [console, file_rotating]
+    propagate: false
+  
+  transformers:
+    level: WARNING
+    handlers: [console, file_rotating]
+    propagate: false
+  
+  requests:
+    level: WARNING
+    handlers: [console, file_rotating]
+    propagate: false
+  
+  urllib3:
+    level: WARNING
+    handlers: [console, file_rotating]
+    propagate: false
+
+# Root logger configuration
+root:
+  level: DEBUG
+  handlers: [console, file_rotating, error_file]
+
+# Development configuration
+# Override when running in development:
+# import logging.config
+# import yaml
+# with open('config/logging.yaml', 'r') as f:
+#     config_dev = yaml.safe_load(f)
+# config_dev['loggers']['src']['level'] = 'DEBUG'
+# config_dev['root']['level'] = 'DEBUG'
+# logging.config.dictConfig(config_dev)
+
+# Production configuration notes:
+# - Set console handler to WARNING or ERROR
+# - Set file handlers to INFO or DEBUG
+# - Use RotatingFileHandler to manage file sizes
+# - Set backupCount appropriately (5-10)
+# - Use TimedRotatingFileHandler for daily logs
+# - Separate error logs for monitoring

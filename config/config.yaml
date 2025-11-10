@@ -1,0 +1,289 @@
+# Job Application Agent - Configuration
+# Main application settings
+
+# Application metadata
+app:
+  name: "Job Application Agent"
+  version: "1.0.0"
+  environment: "production"  # development, staging, production
+  debug: false
+
+# Model Configuration
+model:
+  name: "MAYINI"
+  type: "transformer"
+  
+  # Vocabulary
+  vocab_size: 5000
+  
+  # Architecture
+  hidden_dim: 256
+  embedding_dim: 256
+  num_heads: 8
+  num_layers: 4
+  
+  # Sequences
+  max_seq_length: 512
+  
+  # Regularization
+  dropout_rate: 0.1
+  layer_norm_eps: 1e-6
+  
+  # Initialization
+  weight_init: "xavier_uniform"
+  initializer_range: 0.02
+
+# Training Configuration
+training:
+  learning_rate: 0.0001
+  batch_size: 32
+  epochs: 10
+  weight_decay: 0.01
+  
+  # Learning rate scheduler
+  warmup_steps: 500
+  total_steps: 10000
+  
+  # Gradient
+  gradient_clip: 1.0
+  gradient_accumulation_steps: 1
+  
+  # Checkpointing
+  save_steps: 500
+  save_total_limit: 3
+  
+  # Validation
+  validation_split: 0.1
+  eval_steps: 100
+
+# Job Scraper Configuration
+scraper:
+  # Platforms to search
+  platforms:
+    - "linkedin"
+    - "indeed"
+    - "glassdoor"
+    - "monster"
+  
+  # Search parameters
+  max_jobs: 50
+  timeout: 10
+  retry_attempts: 3
+  delay_between_requests: 1.0
+  
+  # Filtering
+  min_salary: 50000
+  experience_levels:
+    - "entry"
+    - "mid"
+    - "senior"
+
+# Resume Customizer Configuration
+customizer:
+  # Resume constraints
+  max_resume_length: 2000
+  max_bullets: 10
+  
+  # Skill matching
+  skill_matching_threshold: 0.5
+  
+  # Weights for customization
+  experience_weight: 0.3
+  skills_weight: 0.5
+  education_weight: 0.2
+  
+  # Customization options
+  add_cover_letter: true
+  add_keywords: true
+  optimize_formatting: true
+
+# Job Classifier Configuration
+classifier:
+  # Model architecture
+  embedding_dim: 300
+  hidden_dim: 128
+  num_classes: 2
+  
+  # Classification
+  relevance_threshold: 0.5
+  confidence_threshold: 0.7
+  
+  # Regularization
+  dropout_rate: 0.1
+
+# Application Agent Configuration
+agent:
+  # Application settings
+  max_applications_per_run: 10
+  min_relevance_score: 0.3
+  
+  # Auto-apply settings
+  auto_apply: false
+  auto_apply_threshold: 0.8
+  
+  # Results
+  save_results: true
+  export_format: "json"  # json, csv, text
+
+# API Configuration
+api:
+  # LinkedIn
+  linkedin_api_key: ""
+  linkedin_base_url: "https://api.linkedin.com/v2"
+  
+  # Indeed
+  indeed_api_key: ""
+  indeed_base_url: "https://api.indeed.com/api"
+  
+  # Glassdoor
+  glassdoor_api_key: ""
+  glassdoor_base_url: "https://api.glassdoor.com/api"
+  
+  # OpenAI (optional)
+  openai_api_key: ""
+  openai_model: "gpt-3.5-turbo"
+  
+  # Rate limiting
+  rate_limit_per_minute: 60
+  concurrent_requests: 5
+
+# Database Configuration
+database:
+  # Local storage
+  type: "local"  # local, sqlite, postgresql
+  path: "data/jobs.db"
+  
+  # Optional: PostgreSQL
+  # host: "localhost"
+  # port: 5432
+  # name: "job_agent"
+  # user: "postgres"
+  # password: ""
+
+# Cache Configuration
+cache:
+  enabled: true
+  type: "memory"  # memory, redis
+  ttl: 3600  # seconds
+  
+  # Redis (optional)
+  # host: "localhost"
+  # port: 6379
+  # db: 0
+
+# Device Configuration
+device:
+  # Auto-detect: cuda if available, else cpu
+  use_gpu: true
+  device_id: 0  # For multi-GPU systems
+  
+  # Memory settings
+  max_memory: 8GB
+  mixed_precision: false  # fp16 training
+
+# Feature Flags
+features:
+  use_mayini_model: true
+  enable_caching: true
+  use_gpu: true
+  enable_logging: true
+  save_artifacts: true
+  
+  # Experimental features
+  use_fine_tuning: false
+  enable_recommendations: true
+  enable_auto_apply: false
+
+# Paths Configuration
+paths:
+  models_dir: "models/"
+  data_dir: "data/"
+  logs_dir: "logs/"
+  output_dir: "output/"
+  cache_dir: "cache/"
+  notebooks_dir: "notebooks/"
+  
+  # Model checkpoints
+  checkpoint_dir: "models/checkpoints/"
+  
+  # Data files
+  sample_jobs_file: "data/sample_jobs.json"
+  sample_resume_file: "data/sample_resume.json"
+
+# Server Configuration (Gradio)
+server:
+  host: "0.0.0.0"
+  port: 7860
+  share: false
+  show_api: true
+  
+  # SSL (optional)
+  ssl_keyfile: ""
+  ssl_certfile: ""
+  
+  # Security
+  enable_auth: false
+  username: "admin"
+  password: ""
+
+# Notifications Configuration
+notifications:
+  enabled: true
+  
+  # Email
+  email_enabled: false
+  smtp_server: "smtp.gmail.com"
+  smtp_port: 587
+  sender_email: ""
+  sender_password: ""
+  recipient_email: ""
+  
+  # Slack
+  slack_enabled: false
+  slack_webhook_url: ""
+  slack_channel: "#job-applications"
+  
+  # Discord
+  discord_enabled: false
+  discord_webhook_url: ""
+
+# Monitoring Configuration
+monitoring:
+  enabled: true
+  
+  # Metrics
+  track_metrics: true
+  
+  # Health checks
+  health_check_interval: 300  # seconds
+  
+  # Alerts
+  alert_on_errors: true
+  alert_on_warnings: false
+
+# Backup Configuration
+backup:
+  enabled: true
+  backup_dir: "backups/"
+  backup_interval: 86400  # seconds (24 hours)
+  keep_backups: 7  # Keep last 7 backups
+  
+  # Backup targets
+  backup_data: true
+  backup_models: true
+  backup_logs: false
+
+# Advanced Settings
+advanced:
+  # Processing
+  num_workers: 4
+  batch_processing: true
+  
+  # Optimization
+  optimize_memory: true
+  profile_performance: false
+  
+  # Development
+  debug_mode: false
+  verbose_logging: false
+  save_intermediate_results: false
