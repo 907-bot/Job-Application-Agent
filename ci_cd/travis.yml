@@ -1,0 +1,184 @@
+language: python
+python:
+  - "3.8"
+  - "3.9"
+  - "3.10"
+  - "3.11"
+
+dist: focal
+
+# Before install
+before_install:
+  - python --version
+  - pip install --upgrade pip setuptools wheel
+  - pip install -r requirements.txt
+
+# Install dependencies
+install:
+  - pip install pytest pytest-cov black flake8 mypy bandit safety
+  - pip install -r requirements.txt
+
+# Environment variables
+env:
+  global:
+    - secure: "YOUR_ENCRYPTED_DOCKER_PASSWORD"
+
+# Before script
+before_script:
+  - echo "Running pre-tests setup..."
+
+# Main test script
+script:
+  # Lint checks
+  - echo "Running linting checks..."
+  - black --check src tests
+  - flake8 src tests --max-line-length=120
+  - mypy src --ignore-missing-imports
+  
+  # Unit tests with coverage
+  - echo "Running tests with coverage..."
+  - pytest tests/ -v \
+      --cov=src \
+      --cov-report=xml \
+      --cov-report=html \
+      --cov-report=term-missing
+  
+  # Security checks
+  - echo "Running security scans..."
+  - bandit -r src -f json -o bandit-report.json
+  - safety check --json
+  
+  # Integration tests
+  - echo "Running integration tests..."
+  - pytest tests/test_integration.py -v
+
+# After script
+after_script:
+  - echo "Tests completed"
+
+# Upload coverage
+after_success:
+  - bash <(curl -s https://codecov.io/bash) -f coverage.xml
+  - echo "Coverage uploaded"
+
+# Build matrix
+matrix:
+  include:
+    - python: "3.9"
+      env: DEPLOY=true
+  allow_failures:
+    - python: "3.11"
+
+# Notifications
+notifications:
+  # Email notifications
+  email:
+    recipients:
+      - your-email@example.com
+    on_success: always
+    on_failure: always
+  
+  # Slack notifications
+  slack:
+    secure: "YOUR_ENCRYPTED_SLACK_WEBHOOK"
+    rooms:
+      - "YOUR_SLACK_CHANNEL"
+    on_success: always
+    on_failure: always
+  
+  # GitHub status
+  status:
+    context: "continuous-integration/travis-ci"
+    verbose: true
+
+# Deployment
+deploy:
+  - provider: script
+    script: bash scripts/deploy-docker.sh
+    on:
+      branch: main
+      python: "3.9"
+    skip_cleanup: true
+  
+  - provider: pypi
+    username: __token__
+    password:
+      secure: "YOUR_ENCRYPTED_PYPI_TOKEN"
+    on:
+      tags: true
+      branch: main
+      python: "3.9"
+    skip_cleanup: true
+  
+  - provider: releases
+    api_key:
+      secure: "YOUR_ENCRYPTED_GITHUB_TOKEN"
+    file:
+      - "dist/*"
+    skip_cleanup: true
+    on:
+      tags: true
+
+# Cache
+cache:
+  directories:
+    - .cache/pip
+  pip: true
+
+# Stages
+stages:
+  - lint
+  - test
+  - security
+  - deploy
+
+# Jobs
+jobs:
+  include:
+    - stage: lint
+      script:
+        - black --check src tests
+        - flake8 src tests --max-line-length=120
+        - mypy src --ignore-missing-imports
+    
+    - stage: test
+      script:
+        - pytest tests/ -v --cov=src --cov-report=xml
+    
+    - stage: security
+      script:
+        - bandit -r src
+        - safety check
+    
+    - stage: deploy
+      if: branch = main AND type = push
+      script:
+        - bash scripts/deploy.sh
+
+# Service configuration
+services:
+  - docker
+  - postgresql
+  - redis-server
+
+# Addons
+addons:
+  postgresql: "12"
+  redis-server:
+    version: "6.0"
+
+# Branch filters
+branches:
+  only:
+    - main
+    - develop
+    - /^v\d+\.\d+\.\d+$/
+  except:
+    - gh-pages
+    - /.*-WIP$/
+
+# Apt packages
+apt:
+  packages:
+    - build-essential
+    - python3-dev

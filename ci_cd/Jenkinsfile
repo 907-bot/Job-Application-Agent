@@ -1,0 +1,278 @@
+// Jenkinsfile - CI/CD Pipeline for Job Application Agent
+// Pipeline orchestration for build, test, and deployment
+
+pipeline {
+    agent any
+    
+    // Build triggers
+    triggers {
+        githubPush()
+        pollSCM('H/15 * * * *')  // Poll every 15 minutes
+    }
+    
+    // Environment variables
+    environment {
+        PROJECT_NAME = 'job-application-agent'
+        DOCKER_REGISTRY = 'docker.io'
+        DOCKER_IMAGE = "${DOCKER_REGISTRY}/yourusername/${PROJECT_NAME}"
+        PYTHON_VERSION = '3.9'
+        PIP_CACHE_DIR = '.cache/pip'
+    }
+    
+    // Pipeline options
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+        timeout(time: 1, unit: 'HOURS')
+        timestamps()
+        disableConcurrentBuilds()
+    }
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                echo "Checking out repository..."
+                checkout scm
+                script {
+                    env.GIT_COMMIT_MSG = sh(
+                        script: "git log -1 --pretty=%B",
+                        returnStdout: true
+                    ).trim()
+                    env.GIT_COMMIT_SHORT = sh(
+                        script: "git rev-parse --short HEAD",
+                        returnStdout: true
+                    ).trim()
+                }
+                echo "Repository checked out: ${env.GIT_COMMIT_SHORT}"
+            }
+        }
+        
+        stage('Setup') {
+            steps {
+                echo "Setting up environment..."
+                sh '''
+                    python${PYTHON_VERSION} -m venv venv
+                    . venv/bin/activate
+                    pip install --upgrade pip setuptools wheel
+                    pip install -r requirements.txt
+                    pip install pytest pytest-cov black flake8 mypy
+                '''
+            }
+        }
+        
+        stage('Lint') {
+            steps {
+                echo "Running code quality checks..."
+                sh '''
+                    . venv/bin/activate
+                    echo "Running Black formatter check..."
+                    black --check src tests || true
+                    
+                    echo "Running Flake8 linter..."
+                    flake8 src tests --max-line-length=120 || true
+                    
+                    echo "Running MyPy type checker..."
+                    mypy src --ignore-missing-imports || true
+                '''
+            }
+        }
+        
+        stage('Unit Tests') {
+            steps {
+                echo "Running unit tests..."
+                sh '''
+                    . venv/bin/activate
+                    pytest tests/ -v \
+                        --cov=src \
+                        --cov-report=xml \
+                        --cov-report=html \
+                        --junitxml=test-results.xml
+                '''
+            }
+            post {
+                always {
+                    junit 'test-results.xml'
+                    publishHTML([
+                        reportDir: 'htmlcov',
+                        reportFiles: 'index.html',
+                        reportName: 'Coverage Report'
+                    ])
+                    step([$class: 'CoberturaPublisher',
+                        autoUpdateHealth: false,
+                        autoUpdateStability: false,
+                        coberturaReportFile: 'coverage.xml',
+                        failUnstable: false,
+                        maxNumberOfBuilds: 0,
+                        onlyStable: false,
+                        sourceEncoding: 'ASCII',
+                        zoomCoverageChart: false])
+                }
+            }
+        }
+        
+        stage('Security Scan') {
+            steps {
+                echo "Running security scans..."
+                sh '''
+                    . venv/bin/activate
+                    echo "Running Bandit security check..."
+                    bandit -r src -f json -o bandit-report.json || true
+                    
+                    echo "Checking for known vulnerabilities..."
+                    safety check --json || true
+                '''
+            }
+        }
+        
+        stage('Build Docker Image') {
+            when {
+                branch 'main'
+            }
+            steps {
+                echo "Building Docker image..."
+                sh '''
+                    docker build \
+                        -t ${DOCKER_IMAGE}:${GIT_COMMIT_SHORT} \
+                        -t ${DOCKER_IMAGE}:latest \
+                        -f Dockerfile .
+                    
+                    echo "Docker image built successfully"
+                    docker images | grep ${PROJECT_NAME}
+                '''
+            }
+        }
+        
+        stage('Push to Registry') {
+            when {
+                branch 'main'
+            }
+            steps {
+                echo "Pushing Docker image to registry..."
+                sh '''
+                    echo "Logging in to Docker Registry..."
+                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+                    
+                    echo "Pushing image..."
+                    docker push ${DOCKER_IMAGE}:${GIT_COMMIT_SHORT}
+                    docker push ${DOCKER_IMAGE}:latest
+                    
+                    echo "Image pushed successfully"
+                    docker logout
+                '''
+            }
+        }
+        
+        stage('Deploy to Staging') {
+            when {
+                branch 'main'
+            }
+            steps {
+                echo "Deploying to staging environment..."
+                sh '''
+                    echo "Deploying to staging..."
+                    docker-compose -f docker-compose.staging.yml up -d
+                    
+                    echo "Waiting for services to be ready..."
+                    sleep 10
+                    
+                    echo "Running smoke tests..."
+                    curl -f http://localhost:7860/health || exit 1
+                    
+                    echo "Staging deployment successful"
+                '''
+            }
+        }
+        
+        stage('Integration Tests') {
+            when {
+                branch 'main'
+            }
+            steps {
+                echo "Running integration tests..."
+                sh '''
+                    . venv/bin/activate
+                    pytest tests/test_integration.py -v \
+                        --junitxml=integration-test-results.xml
+                '''
+            }
+            post {
+                always {
+                    junit 'integration-test-results.xml'
+                }
+            }
+        }
+        
+        stage('Performance Tests') {
+            when {
+                branch 'main'
+            }
+            steps {
+                echo "Running performance tests..."
+                sh '''
+                    . venv/bin/activate
+                    python -m pytest tests/ -v --benchmark-only \
+                        --benchmark-json=benchmark.json || true
+                '''
+            }
+        }
+        
+        stage('Deploy to Production') {
+            when {
+                tag "v*"
+            }
+            input {
+                message "Deploy to Production?"
+                ok "Deploy"
+            }
+            steps {
+                echo "Deploying to production..."
+                sh '''
+                    echo "Tag: ${TAG_NAME}"
+                    echo "Deploying version ${TAG_NAME} to production..."
+                    
+                    kubectl set image deployment/job-agent \
+                        job-agent=${DOCKER_IMAGE}:${GIT_COMMIT_SHORT} \
+                        -n production
+                    
+                    kubectl rollout status deployment/job-agent -n production
+                    
+                    echo "Production deployment successful"
+                '''
+            }
+        }
+        
+        stage('Slack Notification') {
+            when {
+                always()
+            }
+            steps {
+                script {
+                    def buildStatus = currentBuild.result ?: 'SUCCESS'
+                    def color = buildStatus == 'SUCCESS' ? 'good' : 'danger'
+                    
+                    slackSend(
+                        color: color,
+                        message: """
+                            Build ${buildStatus}: Job Application Agent
+                            Build: ${env.BUILD_NUMBER}
+                            Commit: ${env.GIT_COMMIT_SHORT}
+                            Branch: ${env.GIT_BRANCH}
+                        """.stripIndent()
+                    )
+                }
+            }
+        }
+    }
+    
+    post {
+        always {
+            echo "Pipeline execution completed"
+            cleanWs()
+        }
+        success {
+            echo "Pipeline succeeded"
+        }
+        failure {
+            echo "Pipeline failed"
+        }
+    }
+}
