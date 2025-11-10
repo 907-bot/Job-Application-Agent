@@ -1,0 +1,15 @@
+# This file ensures the models/ directory is tracked by git
+# .gitkeep files are used to track empty directories in git repositories
+# since git doesn't track empty directories by default
+
+# Directory structure:
+# models/
+# ├── .gitkeep                  (this file - keeps directory in git)
+# ├── checkpoints/              (model checkpoints during training)
+# ├── pretrained/               (pre-trained model weights)
+# └── saved_models/             (final trained models)
+
+# Usage:
+# - Checkpoints are saved during training: python scripts/train_model.py
+# - Models are loaded during inference from this directory
+# - Add *.pt files to .gitignore to avoid committing large model files
